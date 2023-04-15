@@ -1,37 +1,26 @@
 import uuid
+
 from django.core.mail import EmailMessage
-from rest_framework import filters, viewsets, permissions, status
-from rest_framework.pagination import LimitOffsetPagination
-from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.views import APIView
-from rest_framework.permissions import AllowAny
-from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework.response import Response
 from django.db.models import Avg
-from rest_framework.decorators import action
 from django.shortcuts import get_object_or_404
-from reviews.models import Category, Genre, Title, User, Review
-from .serializers import (
-    CategoriesSerializer,
-    GenresSerializer,
-    TitlesSerializer,
-    ReadOnlyTitleSerializer,
-    UsersSerializer,
-    UserEditSerializer,
-    CommentSerializer,
-    ReviewSerializer,
-    TokenSerializer,
-    SignUpSerializer
-)
-from .permissions import (
-    IsAdminOnly,
-    IsAdminUserOrReadOnly,
-    AdminOnly,
-    AdminModeratorAuthorPermission
-)
-from .mixins import ListCreateDestroyViewSet
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters, permissions, status, viewsets
+from rest_framework.decorators import action
+from rest_framework.pagination import LimitOffsetPagination
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework_simplejwt.tokens import RefreshToken
+from reviews.models import Category, Genre, Review, Title, User
+
 from .filters import TitlesFilter
+from .mixins import ListCreateDestroyViewSet
+from .permissions import (AdminModeratorAuthorPermission, AdminOnly,
+                          IsAdminOnly, IsAdminUserOrReadOnly)
+from .serializers import (CategoriesSerializer, CommentSerializer,
+                          GenresSerializer, ReadOnlyTitleSerializer,
+                          ReviewSerializer, SignUpSerializer, TitlesSerializer,
+                          TokenSerializer, UserEditSerializer, UsersSerializer)
 
 
 class UsersViewSet(viewsets.ModelViewSet):
