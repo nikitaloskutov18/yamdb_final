@@ -8,7 +8,7 @@ services:
     env_file:
       - .env
   web:
-    image: ragecode/workflow_test:latest
+    image: ragecode/ragecode:latest
     restart: always
     volumes:
       - static_value:/app/static/
