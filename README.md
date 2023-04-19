@@ -1,5 +1,12 @@
 ![Yamdb Workflow Status](https://github.com/ragecodemode/yamdb_final/actions/workflows/yamdb_workflow.yml/badge.svg?branch=master&event=push)
 
+Ссылка на боевой сервер:
+
+```
+https://console.cloud.yandex.ru/folders/b1grfjus1p1co7gjuagt/compute/instance/epdq5oemakpq4d31305f/overview
+```
+
+
 ### Описание
 Проект YaMDb собирает отзывы пользователей на произведения. Произведения делятся на категории:«Книги», «Фильмы», «Музыка». Список категорий может быть расширен. Настроика для приложения Continuous Integration и Continuous Deployment, реализация:
 
