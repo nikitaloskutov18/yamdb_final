@@ -1,6 +1,6 @@
 ![Yamdb Workflow Status](https://github.com/ragecodemode/yamdb_final/actions/workflows/yamdb_workflow.yml/badge.svg?branch=master&event=push)
 
-## Развёрнутый проект на сервер доступен по ссылке:
+## Развёрнутый проект на сервере доступен по ссылке:
 
  https://158.160.21.158
 ----
