@@ -1,68 +1,78 @@
 ![Yamdb Workflow Status](https://github.com/ragecodemode/yamdb_final/actions/workflows/yamdb_workflow.yml/badge.svg?branch=master&event=push)
 
-Ссылка на боевой сервер:
+## Развёрнутый проект на сервер доступен по ссылке:
 
-```
-https://console.cloud.yandex.ru/folders/b1grfjus1p1co7gjuagt/compute/instance/epdq5oemakpq4d31305f/overview
-```
-
+ https://158.160.21.158
+----
 
 ### Описание
 Проект YaMDb собирает отзывы пользователей на произведения. Произведения делятся на категории:«Книги», «Фильмы», «Музыка». Список категорий может быть расширен. Настроика для приложения Continuous Integration и Continuous Deployment, реализация:
+---
 
-```
-автоматический запуск тестов,
-обновление образов на Docker Hub,
+### Технологии
+Pytho, Rest API, Docker, Nginx, Yandex.Cloud 
+
+автоматический запуск тестов;
+обновление образов на Docker Hub;
 автоматический деплой на боевой сервер при пуше в главную ветку main.
-```
-```
-Как запустить проект:
-```
-Все описанное ниже относится к ОС Linux.
+---
 
-Клонируем репозиторий и и переходим в него:
+### Запустк проекта
 
-git clone git@github.com:themasterid/yamdb_final.git
+```
+Склонировать репозиторий:
+
+git clone: git@github.com:ragecodemode/yamdb_final.git
+
 cd yamdb_final
+
 Создаем и активируем виртуальное окружение:
-python3 -m venv venv
-Windows:
+
+python -m venv venv
+
 source venv/Scripts/activate
-Linux:
-source venv/bin/activate
-Обновим pip:
-python -m pip install --upgrade pip 
+
 Ставим зависимости из requirements.txt:
+
 pip install -r api_yamdb/requirements.txt 
+
+В папке infra создаем файл .env с следующим содержимом:
+
+DB_ENGINE=django.db.backends.postgresql 
+DB_NAME=postgres 
+POSTGRES_USER=postgres 
+POSTGRES_PASSWORD=postgres 
+DB_HOST=db 
+DB_PORT=5432
+
+В settings.py добавляем следующее:
+
+DATABASES = {
+    'default': {
+        'ENGINE': os.getenv('DB_ENGINE', 'django.db.backends.postgresql'),
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('POSTGRES_USER'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT')
+    }
+}
+
 Переходим в папку с файлом docker-compose.yaml:
+
 cd infra
 
-Предварительно установим Docker на ПК под управлением Linux (Ubuntu 22.10), для Windows немного иная установка, тут не рассматриваем:
+Собираем контейнеры, выполняем миграции и собираем статику:
 
-sudo apt update && apt upgrade -y
+docker-compose up -d --build
 
-Удаляем старый Docker:
-sudo apt remove docker
-Устанавливаем Docker:
-sudo apt install docker.io
-Смотрим версию Docker (должно выдать Docker version 20.10.16, build 20.10.16-0ubuntu1):
-docker --version
-Активируем Docker в системе, что бы при перезагрузке запускался автоматом:
-sudo systemctl enable docker
-Запускаем Docker:
-sudo systemctl start docker
-Смотрим статус (выдаст статус, много букв):
-sudo systemctl status docker
+docker-compose exec web python manage.py migrate
+docker-compose exec web python manage.py createsuperuser
+docker-compose exec web python manage.py collectstatic --no-input
 
+Создаем дамп базы данных:
 
-Перезапустим систему:
+docker-compose exec web python manage.py dumpdata > fixtures.json
 
-sudo reboot
-
+Теперь проект доступен по адресу: http://localhost/.
 ```
-Установка PostgreSQL:
-```
-sudo apt install postgresql postgresql-contrib -y
-Управляем БД:
-Остановить
-sudo systemctl stop postgresql
