@@ -90,4 +90,3 @@ docker-compose exec web python manage.py dumpdata > fixtures.json
 ```
 
 Теперь проект доступен по адресу: http://localhost/.
-```
